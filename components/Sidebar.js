@@ -4,8 +4,21 @@ import styled from "styled-components";
 import ChatIcon from "@material-ui/icons/Chat";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SearchIcon from "@material-ui/icons/Search";
+import * as EmailValidator from "email-validator";
 
 const Sidebar = () => {
+  const createChat = () => {
+    const input = prompt(
+      "Please Enter an Email address for the user you wish to chat with"
+    );
+
+    if (!input) return null;
+
+    if (EmailValidator.validate(input)) {
+      // We need to add the chats into the firebase db
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -25,7 +38,7 @@ const Sidebar = () => {
         <SearchInput placeholder="Search in chats" />
       </Search>
 
-      <SidebarButton>Start a New Chat</SidebarButton>
+      <SidebarButton onClick={createChat}>Start a New Chat</SidebarButton>
 
       {/* List of chats */}
     </Container>
