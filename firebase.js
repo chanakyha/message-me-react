@@ -10,7 +10,10 @@ import {
   collection,
   setDoc,
   doc,
+  addDoc,
   serverTimestamp,
+  query,
+  where,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -38,4 +41,7 @@ export {
   doc,
   serverTimestamp,
   signOut,
+  addDoc,
+  query,
+  where,
 };
