@@ -19,12 +19,14 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import Chat from "./Chat";
 const Sidebar = () => {
   const [user] = useAuthState(auth);
-  const userChatRef = query(
-    collection(db, "chats"),
-    where("users", "array-contains", user?.email)
-  );
+  if (user) {
+    const userChatRef = query(
+      collection(db, "chats"),
+      where("users", "array-contains", user?.email)
+    );
 
-  const [chatsSnapshot] = useCollection(userChatRef);
+    const [chatsSnapshot] = useCollection(userChatRef);
+  }
 
   const createChat = () => {
     const input = prompt(
