@@ -11,7 +11,6 @@ import {
   query,
   getDocs,
   orderBy,
-  serverTimestamp,
   getDoc,
   auth,
 } from "../../firebase";
@@ -37,7 +36,7 @@ export default Chat;
 
 export async function getServerSideProps(context) {
   const ref = collection(db, "chats", context.query.id, "messages");
-  const messagesRef = await getDocs(query(ref, orderBy("Timestamp", "asc")));
+  const messagesRef = await getDocs(query(ref, orderBy("timestamp", "asc")));
 
   const messages = messagesRef.docs
     .map((doc) => ({
@@ -46,7 +45,7 @@ export async function getServerSideProps(context) {
     }))
     .map((messages) => ({
       ...messages,
-      timestamp: serverTimestamp().toDate().getTime(),
+      timestamp: messages.timestamp.toDate(),
     }));
 
   const chatRes = await getDoc(doc(db, "chats", context.query.id));
@@ -54,8 +53,6 @@ export async function getServerSideProps(context) {
     id: chatRes.id,
     ...chatRes.data(),
   };
-
-  console.log(chat, messages);
 
   return {
     props: {

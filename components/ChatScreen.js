@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -20,8 +20,10 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "./Message";
 import getRecientEmail from "../utils/getRecipientEmail";
 import TimeAgo from "timeago-react";
+
 const ChatScreen = ({ chat, messages }) => {
   const [user] = useAuthState(auth);
+  const EndofMessagesRef = useRef(null);
   const router = useRouter();
   const [input, setInput] = useState("");
   const [messagesSnapshot] = useCollection(
@@ -58,6 +60,13 @@ const ChatScreen = ({ chat, messages }) => {
     }
   };
 
+  const ScrollToBottom = () => {
+    EndofMessagesRef.current.scrollIntoView({
+      behaviour: "smooth",
+      block: "start",
+    });
+  };
+
   const sendMessage = (e) => {
     e.preventDefault();
 
@@ -77,6 +86,7 @@ const ChatScreen = ({ chat, messages }) => {
     });
 
     setInput("");
+    ScrollToBottom();
   };
 
   const recipient = recipientSnapshot?.docs?.[0]?.data();
@@ -117,7 +127,7 @@ const ChatScreen = ({ chat, messages }) => {
 
       <MessageContainer>
         {showMessages()}
-        <EndofMessage />
+        <EndofMessage ref={EndofMessagesRef} />
       </MessageContainer>
 
       <InputContainer>
@@ -182,7 +192,9 @@ const MessageContainer = styled.div`
   background-color: #e5ded8;
   min-height: 90vh;
 `;
-const EndofMessage = styled.div``;
+const EndofMessage = styled.div`
+  margin-bottom: 50px;
+`;
 const InputContainer = styled.form`
   display: flex;
   align-items: center;

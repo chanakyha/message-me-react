@@ -21,7 +21,7 @@ const Sidebar = () => {
   const [user] = useAuthState(auth);
   const userChatRef = query(
     collection(db, "chats"),
-    where("users", "array-contains", user.email)
+    where("users", "array-contains", user?.email)
   );
 
   const [chatsSnapshot] = useCollection(userChatRef);
