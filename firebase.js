@@ -14,6 +14,8 @@ import {
   serverTimestamp,
   query,
   where,
+  getDocs,
+  orderBy,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -44,4 +46,6 @@ export {
   addDoc,
   query,
   where,
+  getDocs,
+  orderBy,
 };
