@@ -11,6 +11,7 @@ import {
   setDoc,
   doc,
   addDoc,
+  getDoc,
   serverTimestamp,
   query,
   where,
@@ -48,4 +49,5 @@ export {
   where,
   getDocs,
   orderBy,
+  getDoc,
 };
