@@ -19,6 +19,7 @@ import { AttachFile, InsertEmoticon, Mic, MoreVert } from "@material-ui/icons";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "./Message";
 import getRecientEmail from "../utils/getRecipientEmail";
+import TimeAgo from "timeago-react";
 const ChatScreen = ({ chat, messages }) => {
   const [user] = useAuthState(auth);
   const router = useRouter();
@@ -91,7 +92,18 @@ const ChatScreen = ({ chat, messages }) => {
         )}
         <HeaserInformation>
           <h3>{recipientEmail}</h3>
-          <p>Last Active: ...</p>
+          {recipientSnapshot ? (
+            <p>
+              Last Active:{" "}
+              {recipient?.lastSeen?.toDate() ? (
+                <TimeAgo datetime={recipient?.lastSeen?.toDate()} />
+              ) : (
+                "Unavailable"
+              )}
+            </p>
+          ) : (
+            <p>Loading...</p>
+          )}
         </HeaserInformation>
         <HeaderIcons>
           <IconButton>
