@@ -1,4 +1,5 @@
 import { Avatar, Button, IconButton } from "@material-ui/core";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 import ChatIcon from "@material-ui/icons/Chat";
@@ -18,6 +19,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Chat from "./Chat";
 const Sidebar = () => {
+  const router = useRouter();
   const [user] = useAuthState(auth);
   if (user) {
     const userChatRef = query(
@@ -51,13 +53,15 @@ const Sidebar = () => {
         chat.data().users.find((user) => user === recipientEmail)?.length > 0
     );
 
+  const onSignOut = () => {
+    signOut(auth).catch(alert);
+    router.push("/");
+  };
+
   return (
     <Container>
       <Header>
-        <UserAvatar
-          src={user?.photoURL}
-          onClick={() => signOut(auth).catch(alert)}
-        />
+        <UserAvatar src={user?.photoURL} onClick={onSignOut} />
         <IconContainer>
           <IconButton>
             <ChatIcon />
