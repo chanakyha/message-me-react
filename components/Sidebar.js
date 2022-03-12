@@ -92,7 +92,7 @@ const SearchInput = styled.input`
 const Search = styled.div`
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 15px;
   border-radius: 2px;
 `;
 
@@ -114,8 +114,8 @@ const Header = styled.div`
   z-index: 1;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
-  height: 80px;
+  padding: 10px;
+  height: 50px;
   border-bottom: 1px solid whitesmoke;
 `;
 const IconContainer = styled.div``;
