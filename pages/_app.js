@@ -3,10 +3,24 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Login from "./login";
 import Loading from "../components/Loading";
 import { auth, db, serverTimestamp, setDoc, doc } from "../firebase";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
   const [user, loading] = useAuthState(auth);
+  const router = useRouter();
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      if (window.innerWidth < 427) {
+        alert(
+          "This Page is not for Mobile, So it will redirect to my GitHub Page"
+        );
+        router.push("https://github.com/chanakyha");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (user) {
