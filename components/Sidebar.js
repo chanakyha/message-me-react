@@ -1,4 +1,4 @@
-import { Avatar, Button, IconButton } from "@material-ui/core";
+import { Avatar, Button, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
@@ -18,6 +18,7 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Chat from "./Chat";
+import { Circle } from "better-react-spinkit";
 const Sidebar = () => {
   const router = useRouter();
   const [user] = useAuthState(auth);
@@ -58,16 +59,37 @@ const Sidebar = () => {
     router.push("/");
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const Open3Dot = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const Close3dot = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Container>
       <Header>
-        <UserAvatar src={user?.photoURL} onClick={onSignOut} />
+        <UserAvatar src={user?.photoURL} />
         <IconContainer>
           <IconButton>
             <ChatIcon />
           </IconButton>
           <IconButton>
-            <MoreVertIcon />
+            <MoreVertIcon onClick={Open3Dot} />
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={Close3dot}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem onClick={Close3dot}>Profile</MenuItem>
+              <MenuItem onClick={onSignOut}>Logout</MenuItem>
+            </Menu>
           </IconButton>
         </IconContainer>
       </Header>
@@ -79,15 +101,27 @@ const Sidebar = () => {
 
       <SidebarButton onClick={createChat}>Start a New Chat</SidebarButton>
 
-      {/* List of chats */}
-      {chatsSnapshot?.docs.map((chat) => (
-        <Chat key={chat.id} id={chat.id} users={chat.data().users} />
-      ))}
+      {chatsSnapshot?.docs ? (
+        chatsSnapshot?.docs.map((chat) => (
+          <Chat key={chat.id} id={chat.id} users={chat.data().users} />
+        ))
+      ) : (
+        <LoadingContainer>
+          <Circle color="#000" size={60} />
+        </LoadingContainer>
+      )}
     </Container>
   );
 };
 
 export default Sidebar;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 15em;
+`;
 
 const SearchInput = styled.input`
   outline-width: 0;

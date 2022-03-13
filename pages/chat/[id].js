@@ -24,7 +24,7 @@ const Chat = ({ chat, messages }) => {
       <Head>
         <title>Chat with {getRecientEmail(chat.users, user)}</title>
       </Head>
-      <Sidebar />
+      <SideBar />
       <ChatContainer>
         <ChatScreen chat={chat} messages={messages} />
       </ChatContainer>
@@ -61,6 +61,12 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+const SideBar = styled(Sidebar)`
+  &&& {
+    width: 20px;
+  }
+`;
 
 const Constainer = styled.div`
   display: flex;

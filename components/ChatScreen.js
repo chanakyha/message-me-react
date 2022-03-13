@@ -14,8 +14,14 @@ import {
   doc,
   where,
 } from "../firebase";
-import { Avatar, IconButton } from "@material-ui/core";
-import { AttachFile, InsertEmoticon, Mic, MoreVert } from "@material-ui/icons";
+import { Avatar, IconButton, Menu, MenuItem } from "@material-ui/core";
+import {
+  AttachFile,
+  InsertEmoticon,
+  Mic,
+  MoreVert,
+  Send,
+} from "@material-ui/icons";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "./Message";
 import getRecientEmail from "../utils/getRecipientEmail";
@@ -26,6 +32,8 @@ const ChatScreen = ({ chat, messages }) => {
   const EndofMessagesRef = useRef(null);
   const router = useRouter();
   const [input, setInput] = useState("");
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
   const [messagesSnapshot] = useCollection(
     query(
       collection(db, "chats", router.query.id, "messages"),
@@ -91,7 +99,12 @@ const ChatScreen = ({ chat, messages }) => {
 
   const recipient = recipientSnapshot?.docs?.[0]?.data();
   const recipientEmail = getRecientEmail(chat.users, user);
-
+  const open3Dot = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const close3Dot = () => {
+    setAnchorEl(null);
+  };
   return (
     <Container>
       <Header>
@@ -120,7 +133,19 @@ const ChatScreen = ({ chat, messages }) => {
             <AttachFile />
           </IconButton>
           <IconButton>
-            <MoreVert />
+            <MoreVert onClick={open3Dot} />
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={close3Dot}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem onClick={close3Dot}>View Profile</MenuItem>
+              <MenuItem onClick={close3Dot}>Delete Chat</MenuItem>
+            </Menu>
           </IconButton>
         </HeaderIcons>
       </Header>
@@ -131,7 +156,9 @@ const ChatScreen = ({ chat, messages }) => {
       </MessageContainer>
 
       <InputContainer>
-        <InsertEmoticon />
+        <IconButton>
+          <InsertEmoticon />
+        </IconButton>
         <Input
           onChange={(e) => {
             setInput(e.target.value);
@@ -139,10 +166,9 @@ const ChatScreen = ({ chat, messages }) => {
           value={input}
         />
 
-        <button disabled={!input} type="submit" onClick={sendMessage} hidden>
-          Send Message
-        </button>
-        <Mic />
+        <IconButton disabled={!input} type="submit" onClick={sendMessage}>
+          <Send />
+        </IconButton>
       </InputContainer>
     </Container>
   );
