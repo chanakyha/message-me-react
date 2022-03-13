@@ -11,6 +11,12 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   useEffect(() => {
+    if (window.innerWidth < 427) {
+      alert(
+        "This Page is not for Mobile, So it will redirect to my GitHub Page"
+      );
+      router.push("https://github.com/chanakyha");
+    }
     window.addEventListener("resize", () => {
       if (window.innerWidth < 427) {
         alert(
