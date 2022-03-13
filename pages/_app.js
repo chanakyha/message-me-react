@@ -4,7 +4,6 @@ import Login from "./login";
 import Loading from "../components/Loading";
 import { auth, db, serverTimestamp, setDoc, doc } from "../firebase";
 import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
