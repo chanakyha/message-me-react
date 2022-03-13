@@ -32,13 +32,12 @@ const Container = styled.div`
   height: 100vh;
 `;
 const LoginContainer = styled.div`
-  border-radius: 5px;
   padding: 100px;
   align-items: center;
   background-color: white;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 4px 14px -3px rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 4px 14px -3px rgba(0, 0, 0, 0.1);
 `;
 const Logo = styled.img`
   border-radius: 1em;
